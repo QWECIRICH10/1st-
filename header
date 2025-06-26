@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Course Registration System (CRS) - Manage your courses easily.">
+    <link rel="stylesheet" href="styles.css">
+    <title>CRS | Course Registration System</title>
+</head>
+
+<body>
+    <header>
+        <a href="#" class="logo">CRS</a>       
+    </header>
+</body>
+
+</html>
