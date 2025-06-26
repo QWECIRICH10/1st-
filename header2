@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Course Registration System (CRS) - Manage your courses easily.">
+    <link rel="stylesheet" href="fontawesome-free-6.5.2-web/css/all.css">
+    <link rel="stylesheet" href="styles.css">
+    <title>CRS | Course Registration System</title>
+</head>
+
+<body>
+    <header>
+        <a href="dashboard.php" class="logo">CRS</a>
+
+        <i class="fa fa-bars" id="menu-icon"></i>
+
+            <nav id="nav-menu">
+                <a href="dashboard.php" class="link-items">Home</a>
+                <a href="courses.php" class="link-items">Courses</a>
+                <a href="enrolled.php" class="link-items">Enrolled Courses</a>
+                <a href="logout.php"><i class="fa fa-power-off lout"></i></a>
+                <a href="logout.php" class="lout-media"><i class="fa fa-power-off lout-media"></i>Logout</a>
+            </nav>
+    </header>
+    <script>
+        const navLinks = document.querySelectorAll('.link-items');
+        const menuIcon = document.getElementById('menu-icon');
+        const navMenu = document.getElementById('nav-menu');
+
+        // Function to highlight the active page
+        const activePage = () => {
+            const currentPath = window.location.pathname.split('/').pop();
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPath) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        };
+
+        activePage();
+
+        menuIcon.addEventListener('click', () => {
+            navMenu.classList.toggle('show');
+            menuIcon.classList.toggle('fa-bars');
+            menuIcon.classList.toggle('fa-times');
+        });
+    </script>
+</body>
+
+</html>
