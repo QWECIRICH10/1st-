@@ -1,0 +1,64 @@
+<?php
+session_start();
+require_once 'dbcon.php';
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
+$database = new Database();
+$db = $database->getConnection();
+$user_id = $_SESSION['user_id'];
+
+$query = "SELECT name FROM users WHERE id = :user_id";
+$stmt = $db->prepare($query);
+$stmt->bindParam(':user_id', $user_id);
+$stmt->execute();
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+// Fetch total courses
+$query = "SELECT COUNT(*) AS total_courses FROM courses";
+$stmt = $db->prepare($query);
+$stmt->execute();
+$total_courses = $stmt->fetch(PDO::FETCH_ASSOC)['total_courses'];
+
+// Fetch total enrolled courses
+$query = "SELECT COUNT(*) AS enrolled_courses FROM enrollments WHERE student_id = :user_id";
+$stmt = $db->prepare($query);
+$stmt->bindParam(':user_id', $user_id);
+$stmt->execute();
+$enrolled_courses = $stmt->fetch(PDO::FETCH_ASSOC)['enrolled_courses'];
+
+include_once 'header2.php';
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRS | Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="main-wrapper">
+        <h1>Welcome, <?php echo htmlspecialchars($user['name']); ?>!</h1>
+        <div class="dashboard-summary">
+            <div class="summary-box">
+                <h2>Total Courses</h2>
+                <p><?php echo $total_courses; ?></p>
+            </div>
+            <div class="summary-box">
+                <h2>Your Enrolled Courses</h2>
+                <p><?php echo $enrolled_courses; ?></p>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <?php
+    include_once 'footer.php';
+    ?>
+</body>
+</html>
