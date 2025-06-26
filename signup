@@ -1,0 +1,79 @@
+<?php
+session_start();
+require_once 'dbcon.php';
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $name = trim($_POST['name']);
+    $email = trim($_POST['email']);
+    $password = trim($_POST['password']);
+
+    if (!empty($name) && !empty($email) && !empty($password)) {
+        $database = new Database();
+        $db = $database->getConnection();
+
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+        $query = "INSERT INTO users (name, email, password) VALUES (:name, :email, :password)";
+        $stmt = $db->prepare($query);
+        $stmt->bindParam(':name', $name);
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':password', $hashed_password);
+
+        if ($stmt->execute()) {
+            echo "Registration successful. <a href='login.php'>Login here</a>";
+        } else {
+            echo "Error: Could not register.";
+        }
+    } else {
+        echo "All fields are required.";
+    }
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CRS | Create Account</title>
+    <link rel="stylesheet" href="fontawesome-free-6.5.2-web/css/all.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="wrapper sign">
+        <form class="login-box" action="" method="POST">
+            <div class="login-header">
+                <span>SignUp</span>
+            </div>
+            <div class="input_box">
+                <input type="text" name="name" id="name" class="input-field" placeholder="Name">
+            </div>
+
+            <div class="input_box">
+                <input type="email" name="email" id="email" class="input-field" placeholder="Email">
+                <i class="fa fa-mail icon"></i>
+            </div>
+
+            <div class="input_box">
+                <input type="password" name="password" id="password" class="input-field" placeholder="Password" />
+                <i class="fa fa-lock icon"></i>
+            </div>
+
+            <div class="input_box">
+                <input type="password" name="cpassword" id="cpassword" class="input-field"
+                    placeholder="Confirm Password" />
+                <i class="fa fa-lock icon"></i>
+            </div>
+
+            <div class="input-box">
+                <input type="submit" value="Submit" class="input-submit" />
+            </div>
+
+            <div class="register">
+                <span>Already have an account? <a href="login.php">Login</a></span>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>
